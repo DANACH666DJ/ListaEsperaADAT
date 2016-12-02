@@ -1,0 +1,62 @@
+<title>Dispensadores</title>
+<meta charset="utf-8" />
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="expires" content="0">
+<link rel="stylesheet" type="text/css" href="Estilos.css">
+
+</head>
+<body onload="setInterval(cargarDatos, 4000);">
+
+	<div id="CapaTexto">
+		<h1>Pantalla profesores</h1>
+	</div>
+
+	<div id="id01"></div>
+
+
+	<script>
+		function cargarDatos() {
+			var xmlhttp = new XMLHttpRequest();
+			var url = "DudasPendientes.php";
+			var artemp;
+			xmlhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					console.log("Hola ---- " + this.responseText);
+					var myArr = JSON.parse(this.responseText);
+					myFunction(myArr);
+				}
+			};
+			xmlhttp.open("GET", url, true);
+			xmlhttp.send();
+
+		}
+
+		//Funcion que muestra la tabla 
+		function myFunction(arr) {
+			var out = "";
+			var i;
+			artemp = arr;
+			out += "<table border='10px'>";
+			for (i = 0; i < arr.length; i++) {
+				out += '<tr>' + '<td >'
+						+ arr[i].id + '</td>' + '<td>' + arr[i].ip
+						+ '</td>' + '<td>' + arr[i].usuario + '</td>' + '<td>'
+						+ arr[i].texto  + '</td>' + '<td>' + arr[i].fechaInicio + '</td>' 
+						+ '<td>' + arr[i].fechaFin + '</td>'+'</tr>';
+			}
+			out += "</table >";
+			document.getElementById("id01").innerHTML = out;
+		}
+
+		
+		
+	</script>
+
+
+	<div id="Link">
+		<h1>
+			<a href="PantallaAlumno.html">Volver a pantalla alumno</a>
+		</h1>
+	</div>
+</body>
+</html>

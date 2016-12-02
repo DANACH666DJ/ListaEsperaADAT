@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dispensadores</title>
+<meta charset="utf-8" />
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="expires" content="0">
+<link rel="stylesheet" type="text/css" href="Estilos.css">
+</head>
+<body >
+
+	<div id="CapaTexto">
+		<h1>Pantalla Alumno</h1>
+	</div>
+
+	<div id="id01"></div>
+
+	<script>
+	
+		function insertar() {
+			var xmlhttp = new XMLHttpRequest();
+			var usuario = document.getElementById("inputUsuario").value;
+			var pregunta = document.getElementById("inputPregunta").value;
+			var url = "AbrirDuda.php?Usuario=" + usuario
+			+ "&Pregunta=" + pregunta;
+
+
+			xmlhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					console.log("!!! ---- " + this.responseText);
+					//var myArr = JSON.parse(this.responseText);
+					eliminarCampos();
+
+				}
+			};
+
+			xmlhttp.open("POST", url, true);
+			xmlhttp.send();
+
+			//Forma de hacerlo solo con post
+			/*xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			var params="Usuario=" + usuario + "&Pregunta="+pregunta;
+			var url = "AbrirDuda.php";
+			xmlhttp.send(params);*/
+
+		}
+		
+		
+		function cargarData() {
+
+			var xmlhttp = new XMLHttpRequest();
+			var url = "DudasPendientes.php";
+
+			xmlhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					//alert(this.responseText);
+					var myObj = JSON.parse(this.responseText);
+					var myArr = myObj.Preguntas;
+					myFunction(myArr);
+
+				}
+			};
+
+			xmlhttp.open("GET", url, true);
+			xmlhttp.send();
+		}
+		
+		
+		function myFunction(arr) {
+
+			var out = "";
+			var i;
+			out += '<tr><th>ID Pregunta</th><th>Nombre</th><th>Pregunta</th><th>FechaInicio</th></tr>';
+			for (i = 0; i < arr.length; i++) {
+				$id = arr[i].peticion;
+				out += '<tr onclick="setIdPregunta(' + $id + ');" ><td>'
+						+ arr[i].peticion + '</td><td>' + arr[i].usuario
+						+ '</td><td>' + arr[i].texto + '</td><td> '
+						+ arr[i].fechaInicio + '</td></tr>';
+
+			}
+
+			document.getElementById("id01").innerHTML = out;
+		}
+		
+		
+		function setIdPregunta(variable) {
+			
+
+		}
+
+		
+		
+		
+
+
+		//Función que usamos para poner vacios los campos al hacer insert,update o delete
+		function eliminarCampos() {
+			var inputs = document.formAbrirPeticiones.getElementsByTagName("input");
+			for (var i = 0; i < inputs.length; i++) {
+				inputs[i].value = "";
+			}
+		}
+	</script>
+
+	<div id="enlaces">
+		<h1>
+			<form name="formAbrirPeticiones" action="AbrirDuda.php" method="post">
+				Usuario: <input type="text" name="Usuario" id="inputUsuario"
+					required /><br /> Pregunta:<input type="text" name="Pregunta"
+					id="inputPregunta" required /><br />
+			</form>
+			
+			<button name="AbrirPeticion" onClick="insertar();" value="Nueva">Insertar Peticion</button>
+			<button name="CerrarPeticion" onClick="modificar();" value="Nueva">Cerrar Peticion</button>
+
+		</h1>
+	</div>
+
+	<div id="Link">
+		<h1>
+			<a href="PantallaProfesor.html">Volver a pantalla profesor</a>
+		</h1>
+	</div>
+</body>
+</html>
