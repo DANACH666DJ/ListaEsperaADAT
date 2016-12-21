@@ -7,7 +7,11 @@ include 'conexion.php';
 
 <?php
 
+
+
 $ip=$_SERVER['REMOTE_ADDR'];
+
+
 
 
 
