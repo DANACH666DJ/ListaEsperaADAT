@@ -17,7 +17,21 @@
 
 	<script>
 	
+	function construirJson(idForm) {
+		var form = document.getElementById(idForm);
+		var json = {};
+		for (var i = 0; i < form.length; i++) {
+			var elemento = form[i];
+			json[elemento.id] = elemento.value;
+		}
+		console.log(json);
+		return json;
+	}
+	
+	
 		function insertar() {
+			//Forma de primera forma de hacerlo
+			/*
 			var xmlhttp = new XMLHttpRequest();
 			var usuario = document.getElementById("inputUsuario").value;
 			var pregunta = document.getElementById("inputPregunta").value;
@@ -35,13 +49,31 @@
 			};
 
 			xmlhttp.open("POST", url, true);
-			xmlhttp.send();
+			xmlhttp.send();*/
 
-			//Forma de hacerlo solo con post
-			/*xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-			var params="Usuario=" + usuario + "&Pregunta="+pregunta;
-			var url = "AbrirDuda.php";
-			xmlhttp.send(params);*/
+			
+			var peticionNuevo = new XMLHttpRequest();
+			var url = "AbrirDudaJava.php";		
+			peticionNuevo.open("POST", url, true); 
+			peticionNuevo.setRequestHeader("Content-type", "application/json");
+
+			var paramsJson = construirJson("formPregunta");		
+			peticionNuevo.send(JSON.stringify(paramsJson)); 
+
+			peticionNuevo.onreadystatechange = function() { 
+				if (this.readyState == 4 && this.status == 200) { 
+					console.log(this.responseText);
+					if (this.responseText == 1) {
+						cargarData();
+						eliminarCampos;
+						document.getElementById("Usuario").value; 
+						document.getElementById("Pregunta").value;
+									
+					}
+				}
+			};
+			
+			
 
 		}
 		
@@ -105,10 +137,10 @@
 
 	<div id="enlaces">
 		<h1>
-			<form name="formAbrirPeticiones" action="AbrirDuda.php" method="post">
-				Usuario: <input type="text" name="Usuario" id="inputUsuario"
+			<form name="formAbrirPeticiones" action="AbrirDuda.php" method="post" id="formPregunta">
+				Usuario: <input type="text" name="Usuario" id="Usuario"
 					required /><br /> Pregunta:<input type="text" name="Pregunta"
-					id="inputPregunta" required /><br />
+					id="Pregunta" required /><br />
 			</form>
 			
 			<button name="AbrirPeticion" onClick="insertar();" value="Nueva">Insertar Peticion</button>

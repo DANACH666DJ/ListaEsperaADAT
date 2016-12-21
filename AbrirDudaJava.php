@@ -29,6 +29,7 @@ if (isset ( $stringJson )) {
 	// $pregunta = $obj->{'Pregunta'};
 	
 	$ip = $_SERVER ['REMOTE_ADDR'];
+
 	
 	// if (isset ( $_POST ["json"] )) {
 	
